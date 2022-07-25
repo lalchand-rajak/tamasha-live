@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 describe('Testing my get Api', () => {
     it('should be return status 200', function(done){
         chai
-            .request('https://github.com/gokula1995/JenkinsDemo.git')
+            .request('https://github.com/lalchand-rajak/tamasha-live.git')
             .get('/')
             .then(function(res){
                 expect(res).to.have.status(200);
