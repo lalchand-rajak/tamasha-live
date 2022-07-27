@@ -1,29 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: tamasha
-  name: tamasha
+  name: tamasha-live
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: tamasha
-  strategy: 
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
-  revisionHistoryLimit: 0
   template:
     metadata:
       labels:
         app: tamasha
     spec:
       containers:
-      - image: lalchandrajak05/task:latest
-        name: tamasha
+      - name: tamasha
+        image: lalchandrajak05/task:latest
         imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
         resources: 
           requests:
             memory: "64Mi"
@@ -31,22 +25,17 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m" 
-        ports:
-          - containerPort: 8080
-
-
+# service type loadbalancer
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: tamasha
-  labels:
-    run: tamasha
+  name: tamasha-svc
 spec:
-  ports:
-  - port: 8080
-    protocol: TCP
   selector:
     app: tamasha
+  ports:
+    - protocol: TCP
+      port: 808
+      targetPort: 8080
   type: LoadBalancer
